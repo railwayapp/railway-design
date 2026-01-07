@@ -50,7 +50,7 @@ export default function PrincipleCard({
 }: PrincipleCardProps) {
   return (
     <div
-      className="bg-white rounded-xl border-2 p-2 pt-0 shadow-sm flex flex-col w-full"
+      className="rounded-xl border-2 p-2 pt-0 shadow-sm flex flex-col w-full"
       style={{
         borderColor: themeColor,
         backgroundImage: `radial-gradient(circle, ${hexToRgba(
@@ -59,9 +59,10 @@ export default function PrincipleCard({
         )} 1px, transparent 1px)`,
         backgroundSize: "6px 6px",
         backgroundPosition: "center 0",
-        backgroundColor: "#ffffff",
+        backgroundColor: "#F6F4F2",
         minHeight: "641px",
-        maxWidth: "528px",
+        width: "100%",
+        minWidth: 0,
       }}
     >
       {/* Top Header Section with Dotted Pattern */}
@@ -70,21 +71,23 @@ export default function PrincipleCard({
 
         <div className="relative flex justify-between items-center py-3 pb-2.5 px-2 text-xs">
           <div
-            className="bg-white rounded-md"
+            className="rounded-md"
             style={{
               color: themeColor,
               fontFamily: "JetBrains Mono",
               fontWeight: 600,
+              backgroundColor: "#F6F4F2",
             }}
           >
             {category}
           </div>
           <div
-            className="bg-white rounded-md"
+            className="rounded-md"
             style={{
               color: themeColor,
               fontFamily: "JetBrains Mono",
               fontWeight: 600,
+              backgroundColor: "#F6F4F2",
             }}
           >
             {categoryNumber}/{totalCards}
@@ -93,9 +96,10 @@ export default function PrincipleCard({
       </div>
 
       <div
-        className="bg-white rounded p-6 border-2 flex-1"
+        className="rounded p-6 border-2 flex-1"
         style={{
           borderColor: hexToRgba(themeColor, 0.25),
+          backgroundColor: "#F6F4F2",
         }}
       >
         {/* Principle Category */}
