@@ -167,7 +167,7 @@ a {
 }
 
 .principles-line::-webkit-scrollbar {
-  height: 8px; /* Show horizontal scrollbar for line view */
+  height: 0px; /* Hide native scrollbar */
   width: 0px; /* Hide vertical scrollbar */
 }
 

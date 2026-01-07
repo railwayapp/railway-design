@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import PrincipleCard from "./PrincipleCard";
 
 // Card data array - can be expanded to 30+ cards
@@ -552,12 +553,18 @@ const delightfulCardsData = [
 export default function PrinciplesPage() {
   const [view, setView] = useState<"grid" | "line">("grid");
   const [targetView, setTargetView] = useState<"grid" | "line">("grid");
+  const [activeCardIndex, setActiveCardIndex] = useState(0);
+  const activeCardIndexRef = useRef(0);
   const lineContainerRef = useRef<HTMLDivElement>(null);
 
   const handleViewChange = (newView: "grid" | "line") => {
     if (newView === view) return;
 
     setTargetView(newView);
+    if (newView === "line") {
+      activeCardIndexRef.current = 0;
+      setActiveCardIndex(0);
+    }
     // Start animation immediately
     setTimeout(() => {
       setView(newView);
@@ -583,41 +590,68 @@ export default function PrinciplesPage() {
       const container = lineContainerRef.current;
       const scrollAmount = 528 + 16; // card width + gap
 
+      const currentIndex = activeCardIndexRef.current;
       if (e.key === "ArrowLeft") {
         e.preventDefault();
-        container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+        const newIndex =
+          currentIndex === 0 ? allCards.length - 1 : currentIndex - 1;
+        activeCardIndexRef.current = newIndex;
+        setActiveCardIndex(newIndex);
+        // Scroll to the new card position
+        if (newIndex === allCards.length - 1) {
+          // Scroll to the last card (which is repeated at the end)
+          const lastCardPosition =
+            (allCards.length - 1) * scrollAmount + scrollAmount;
+          container.scrollTo({ left: lastCardPosition, behavior: "smooth" });
+        } else {
+          container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+        }
       } else if (e.key === "ArrowRight") {
         e.preventDefault();
-        container.scrollBy({ left: scrollAmount, behavior: "smooth" });
+        const newIndex =
+          currentIndex === allCards.length - 1 ? 0 : currentIndex + 1;
+        activeCardIndexRef.current = newIndex;
+        setActiveCardIndex(newIndex);
+        // Scroll to the new card position
+        if (newIndex === 0) {
+          // Scroll back to the beginning
+          container.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+          container.scrollBy({ left: scrollAmount, behavior: "smooth" });
+        }
       }
     };
 
-    const handleWheel = (e: WheelEvent) => {
+    const handleScroll = () => {
       if (!lineContainerRef.current) return;
-
-      // Convert vertical scroll to horizontal
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        e.preventDefault();
-        lineContainerRef.current.scrollBy({
-          left: e.deltaY,
-          behavior: "auto",
-        });
-      }
+      const container = lineContainerRef.current;
+      const scrollLeft = container.scrollLeft;
+      const cardWidth = 528;
+      const gap = 16;
+      const cardWithGap = cardWidth + gap;
+      // Account for the half-visible last card at the start (-264px)
+      const adjustedScroll = scrollLeft + 264;
+      const newIndex = Math.max(
+        0,
+        Math.min(allCards.length - 1, Math.round(adjustedScroll / cardWithGap))
+      );
+      activeCardIndexRef.current = newIndex;
+      setActiveCardIndex(newIndex);
     };
 
     window.addEventListener("keydown", handleKeyDown);
     const container = lineContainerRef.current;
     if (container) {
-      container.addEventListener("wheel", handleWheel, { passive: false });
+      container.addEventListener("scroll", handleScroll);
     }
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       if (container) {
-        container.removeEventListener("wheel", handleWheel);
+        container.removeEventListener("scroll", handleScroll);
       }
     };
-  }, [view]);
+  }, [view, allCards.length]);
 
   // Prevent double scrollbars during transition
   useEffect(() => {
@@ -639,34 +673,61 @@ export default function PrinciplesPage() {
 
   return (
     <div
-      className="min-h-screen py-12 px-4"
-      style={{ backgroundColor: "#E7E5E3" }}
+      className="min-h-screen"
+      style={{
+        backgroundColor: "#E7E5E3",
+        padding: "24px",
+        backgroundImage: `
+          linear-gradient(to right, rgba(0, 0, 0, 0.12) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.12) 1px, transparent 1px)
+        `,
+        backgroundSize: "8px 8px",
+      }}
     >
       <div
-        className="max-w-full mx-auto px-4"
-        style={{ position: "relative", overflow: "visible", zIndex: 20 }}
+        className={`mx-auto p-12 ${
+          view === "line" || targetView === "line" ? "w-full" : "max-w-full"
+        }`}
+        style={{
+          position: "relative",
+          overflow: "visible",
+          zIndex: 20,
+          backgroundColor: "#E7E5E3",
+          border: "1px solid rgba(0, 0, 0, 0.12)",
+          minHeight:
+            view === "line" || targetView === "line" ? "100vh" : "auto",
+        }}
       >
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
-            <svg
-              width="28"
-              height="28"
-              viewBox="0 0 48 48"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M45.8145 33.9521C42.0252 42.2343 33.6829 48 23.9746 48C7.77693 47.7555 2.14169 34.0288 2.11035 33.9521H45.8145ZM23.9746 0C37.2436 0.000109469 48.0002 10.7508 48 24.0098C47.9977 26.5692 47.5844 29.1123 46.7764 31.541H1.27832C0.982736 30.6187 0.784825 29.7825 0.782227 29.7715H34.1133C36.2427 29.7715 38.002 28.682 38.8193 26.8555C39.7073 24.8679 39.3314 22.7929 38.0254 20.9883C36.6127 19.0372 34.2429 16.2984 32.6016 15.0576C29.5778 12.7699 25.7349 12.4343 22.6084 12.3301L21.7109 12.2969C20.2613 12.2364 19.9852 12.2031 12.5645 12.2031V12.2061H12.5635C12.5635 12.2061 6.2852 12.2091 3.06152 12.2158C7.18662 4.92919 14.9981 0 23.9746 0ZM36.7471 25.3916C36.4723 26.4557 35.6258 27.3134 34.1143 27.3135H0.205078C0.117655 26.6816 0.0569871 26.0407 0.0185547 25.3916H36.7471ZM12.5576 14.6123C18.9227 14.6123 20.0074 14.6393 21.6064 14.7051C26.4026 14.9096 29.7555 14.2113 35.9883 22.2637C36.1607 22.483 36.3317 22.7075 36.459 22.9561H0C0.0341962 22.1473 0.108319 21.3404 0.222656 20.5391H19.3877V18.1064H0.704102C0.923341 17.1128 1.37398 15.891 1.84082 14.6309C5.44734 14.6213 9.15093 14.6123 12.5576 14.6123Z"
-                fill="#1C1A28"
-              />
-            </svg>
+            <Link href="/" className="cursor-pointer">
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 48 48"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M45.8145 33.9521C42.0252 42.2343 33.6829 48 23.9746 48C7.77693 47.7555 2.14169 34.0288 2.11035 33.9521H45.8145ZM23.9746 0C37.2436 0.000109469 48.0002 10.7508 48 24.0098C47.9977 26.5692 47.5844 29.1123 46.7764 31.541H1.27832C0.982736 30.6187 0.784825 29.7825 0.782227 29.7715H34.1133C36.2427 29.7715 38.002 28.682 38.8193 26.8555C39.7073 24.8679 39.3314 22.7929 38.0254 20.9883C36.6127 19.0372 34.2429 16.2984 32.6016 15.0576C29.5778 12.7699 25.7349 12.4343 22.6084 12.3301L21.7109 12.2969C20.2613 12.2364 19.9852 12.2031 12.5645 12.2031V12.2061H12.5635C12.5635 12.2061 6.2852 12.2091 3.06152 12.2158C7.18662 4.92919 14.9981 0 23.9746 0ZM36.7471 25.3916C36.4723 26.4557 35.6258 27.3134 34.1143 27.3135H0.205078C0.117655 26.6816 0.0569871 26.0407 0.0185547 25.3916H36.7471ZM12.5576 14.6123C18.9227 14.6123 20.0074 14.6393 21.6064 14.7051C26.4026 14.9096 29.7555 14.2113 35.9883 22.2637C36.1607 22.483 36.3317 22.7075 36.459 22.9561H0C0.0341962 22.1473 0.108319 21.3404 0.222656 20.5391H19.3877V18.1064H0.704102C0.923341 17.1128 1.37398 15.891 1.84082 14.6309C5.44734 14.6213 9.15093 14.6123 12.5576 14.6123Z"
+                  fill="#1C1A28"
+                />
+              </svg>
+            </Link>
+            <span className="text-gray-400">/</span>
             <h1 className="text-xl font-semibold text-gray-900 tracking-tight">
               Software Design Principles
             </h1>
           </div>
 
           {/* Tabs */}
-          <div className="flex bg-black/10 p-1 rounded-lg">
+          <div
+            className="flex p-1 rounded-lg"
+            style={{
+              backgroundColor: "rgba(0, 0, 0, 0.04)",
+              border: "1px solid rgba(0, 0, 0, 0.08)",
+            }}
+          >
             <button
               onClick={() => handleViewChange("grid")}
               className={`px-3 py-1 rounded text-xs font-medium transition-all duration-200 ease-in-out ${
@@ -696,7 +757,7 @@ export default function PrinciplesPage() {
           style={{
             width: "100%",
             height: "1px",
-            backgroundColor: "rgba(0, 0, 0, 0.1)",
+            backgroundColor: "rgba(0, 0, 0, 0.12)",
           }}
         />
 
@@ -744,17 +805,12 @@ export default function PrinciplesPage() {
           <div
             className="principles-grid"
             style={{
-              transform:
-                targetView === "line" ||
-                (view === "line" && targetView === "grid")
-                  ? "translateY(128px)"
-                  : "translateY(0)",
               opacity:
                 targetView === "line" ||
                 (view === "line" && targetView === "grid")
                   ? 0
                   : 1,
-              transition: "transform 125ms ease-out, opacity 125ms ease-out",
+              transition: "opacity 125ms ease-out",
             }}
           >
             {allCards.map((card, index) => (
@@ -769,37 +825,78 @@ export default function PrinciplesPage() {
             ref={lineContainerRef}
             className="principles-line"
             style={{
-              position: "fixed",
-              top: "140px", // Start below header
-              left: 0,
-              right: 0,
-              width: "100vw",
-              paddingLeft: "2rem",
-              paddingRight: "2rem",
+              width: "calc(100% + 96px)",
+              marginLeft: "-48px",
+              marginRight: "-48px",
+              paddingLeft: "32px",
+              paddingRight: "32px",
               paddingBottom: "1rem",
-              backgroundColor: "#E7E5E3",
-              height: "calc(100vh - 140px)", // Account for header
-              alignItems: "flex-start", // Override center alignment
-              paddingTop: "calc(50vh - 400px)", // Center cards: adjust this value to fine-tune vertical position
-              overflowX:
-                view === "line" && targetView === "line" ? "auto" : "hidden",
+              backgroundColor: "transparent",
+              alignItems: "flex-start",
+              paddingTop: "32px",
+              overflowX: "hidden",
               overflowY: "hidden",
               opacity: view === "line" && targetView === "line" ? 1 : 0,
               transition: "opacity 125ms ease-out",
-              zIndex: 10,
+              minHeight: "calc(100vh - 300px)",
             }}
           >
-            {allCards.map((card, index) => (
-              <div
-                key={index}
-                style={{
-                  flexShrink: 0,
-                  width: "528px",
-                }}
-              >
-                <PrincipleCard {...card} />
-              </div>
-            ))}
+            {/* Repeat content: show last card first with negative margin */}
+            <div
+              key={`last-${allCards.length - 1}`}
+              style={{
+                flexShrink: 0,
+                width: "528px",
+                marginLeft: "-396px", // Negative margin to show only 1/4 (hide 3/4)
+                opacity:
+                  activeCardIndex === allCards.length - 1
+                    ? 1
+                    : activeCardIndex === allCards.length - 2
+                    ? 0.5
+                    : 0.25,
+                transition: "opacity 0.2s ease-out",
+              }}
+            >
+              <PrincipleCard {...allCards[allCards.length - 1]} />
+            </div>
+            {/* Original cards */}
+            {allCards.map((card, index) => {
+              const isActive = activeCardIndex === index;
+              const isNext = activeCardIndex === index - 1; // Previous card is next (to the right)
+              const opacity = isActive ? 1 : isNext ? 0.5 : 0.25;
+              return (
+                <div
+                  key={index}
+                  style={{
+                    flexShrink: 0,
+                    width: "528px",
+                    opacity,
+                    transition: "opacity 0.2s ease-out",
+                  }}
+                >
+                  <PrincipleCard {...card} />
+                </div>
+              );
+            })}
+            {/* Repeat cards for seamless loop */}
+            {allCards.map((card, index) => {
+              const isActive = activeCardIndex === index;
+              const isNext = activeCardIndex === index - 1; // Previous card is next (to the right)
+              const opacity = isActive ? 1 : isNext ? 0.5 : 0.25;
+              return (
+                <div
+                  key={`repeat-${index}`}
+                  style={{
+                    flexShrink: 0,
+                    width: "528px",
+                    opacity,
+                    transition: "opacity 0.2s ease-out",
+                  }}
+                >
+                  <PrincipleCard {...card} />
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
