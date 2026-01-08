@@ -5,6 +5,7 @@ import CardsAgainstBadQuality from "./components/project-images/CardsAgainstBadQ
 import HowToBuildAPage from "./components/project-images/HowToBuildAPage";
 import SharedDefinitionOfQuality from "./components/project-images/SharedDefinitionOfQuality";
 import Branding from "./components/project-images/Branding";
+import TrainScene from "./components/TrainScene";
 
 // Project data
 const projects = [
@@ -145,6 +146,9 @@ export default function Home() {
               </Link>
             ))}
           </div>
+
+          {/* 3D Train Scene */}
+          <TrainScene />
         </div>
       </div>
     </div>

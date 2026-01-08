@@ -919,7 +919,6 @@ export default function PrinciplesPage() {
             view === "line" || targetView === "line" ? "100vh" : "auto",
         }}
       >
-        {/* Header */}
         <div className="max-w-4xl mx-auto mb-8">
           <div
             className="flex"
@@ -949,7 +948,7 @@ export default function PrinciplesPage() {
               </Link>
               <span className="text-gray-400">/</span>
               <h1 className="text-xl font-semibold text-gray-900 tracking-tight">
-                Cards against bad quality
+                Software Design Principles
               </h1>
             </div>
 
@@ -1055,9 +1054,8 @@ export default function PrinciplesPage() {
           </div>
         </div>
 
-        {/* Divider and Info Section - Aligned with header */}
+        {/* Divider */}
         <div className="max-w-4xl mx-auto">
-          {/* Divider */}
           <div
             className="mb-8"
             style={{

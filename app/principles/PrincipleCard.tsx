@@ -66,7 +66,12 @@ export default function PrincipleCard({
       }}
     >
       {/* Top Header Section with Dotted Pattern */}
-      <div className="relative px-4">
+      <div 
+        className="relative px-4"
+        style={{
+          borderBottom: `2px solid ${hexToRgba(themeColor, 0.25)}`,
+        }}
+      >
         {/* Dotted pattern background */}
 
         <div className="relative flex justify-between items-center py-3 pb-2.5 px-2 text-xs">
@@ -151,6 +156,3 @@ export default function PrincipleCard({
     </div>
   );
 }
-
-
-
