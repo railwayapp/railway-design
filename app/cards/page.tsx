@@ -780,7 +780,7 @@ export default function PrinciplesPage() {
       lastTimeRef.current = now;
 
       const deltaX = clientX - dragStartXRef.current;
-      if (Math.abs(deltaX) > 2) {
+      if (Math.abs(deltaX) > 10) {
         hasDraggedRef.current = true;
       }
       dragOffsetRef.current = deltaX;
