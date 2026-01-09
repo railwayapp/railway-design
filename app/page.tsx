@@ -11,7 +11,7 @@ const projects = [
   {
     title: "Cards against bad quality",
     description: "Something something about our principles",
-    href: "/principles",
+    href: "/cards",
     image: <CardsAgainstBadQuality />,
     disabled: false,
   },

@@ -224,3 +224,9 @@ a {
     max-width: 100% !important;
   }
 }
+
+@media (max-width: 640px) {
+  .info-section-spacing {
+    margin-bottom: 24px !important;
+  }
+}

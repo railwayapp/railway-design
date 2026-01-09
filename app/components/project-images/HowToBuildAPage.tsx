@@ -22,3 +22,4 @@ export default function HowToBuildAPage() {
     </svg>
   );
 }
+

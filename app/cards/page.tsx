@@ -840,6 +840,11 @@ export default function PrinciplesPage() {
         setMobileScale(1);
       }
 
+      // On mobile (< 480px), use a larger fixed scale so cards are more visible
+      if (width < 480) {
+        setMobileScale(0.78); // Fixed scale for mobile - cards appear bigger
+      }
+
       // Calculate grid scale: always try to show one more column than fits at 100%
       // Available width = viewport - outer padding (24*2) - inner padding (48*2)
       const containerWidth = width - 48 - 96; // viewport - outer padding - inner padding
@@ -896,7 +901,7 @@ export default function PrinciplesPage() {
       className="min-h-screen"
       style={{
         backgroundColor: "#DDDBD9",
-        padding: "24px",
+        padding: isMobile ? "8px" : "24px",
         backgroundImage: `
           linear-gradient(to right, rgba(0, 0, 0, 0.08) 1px, transparent 1px),
           linear-gradient(to bottom, rgba(0, 0, 0, 0.08) 1px, transparent 1px)
@@ -905,7 +910,7 @@ export default function PrinciplesPage() {
       }}
     >
       <div
-        className={`mx-auto p-12 ${
+        className={`mx-auto ${
           view === "line" || targetView === "line" ? "w-full" : "max-w-full"
         }`}
         style={{
@@ -917,6 +922,7 @@ export default function PrinciplesPage() {
           boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.12)",
           minHeight:
             view === "line" || targetView === "line" ? "100vh" : "auto",
+          padding: isMobile ? "32px" : "48px",
         }}
       >
         {/* Header */}
@@ -1069,7 +1075,7 @@ export default function PrinciplesPage() {
 
           {/* Info Section - Always visible */}
           <div
-            className="mb-8"
+            className="info-section-spacing"
             style={{
               display: "flex",
               flexDirection: "column",
@@ -1082,6 +1088,7 @@ export default function PrinciplesPage() {
               visibility: "visible",
               pointerEvents: "auto",
               isolation: "isolate",
+              marginBottom: "32px",
             }}
           >
             <div style={{ maxWidth: "528px", width: "100%" }}>
@@ -1104,7 +1111,7 @@ export default function PrinciplesPage() {
             </div>
             <div style={{ maxWidth: "528px", width: "100%" }}>
               <p className="text-sm text-gray-900 leading-normal">
-                Once your solution is functional, go through these prompts to
+                Once your solution is functional, go through these cards to
                 identify which aspects can be improved.
               </p>
             </div>
@@ -1150,7 +1157,12 @@ export default function PrinciplesPage() {
               overflowX: targetView === "line" ? "hidden" : "visible",
               overflowY: "visible",
               position: "relative",
-              height: targetView === "line" ? "700px" : "auto",
+              height:
+                targetView === "line"
+                  ? isStacked
+                    ? "600px"
+                    : "700px"
+                  : "auto",
               minHeight: "auto",
               opacity: 1,
               transform:
@@ -1181,7 +1193,7 @@ export default function PrinciplesPage() {
                 <div
                   style={{
                     position: "absolute",
-                    left: "-24px",
+                    left: isMobile ? "-8px" : "-24px",
                     top: 0,
                     bottom: 0,
                     width: "60px",
@@ -1194,7 +1206,7 @@ export default function PrinciplesPage() {
                 <div
                   style={{
                     position: "absolute",
-                    right: "-24px",
+                    right: isMobile ? "-8px" : "-24px",
                     top: 0,
                     bottom: 0,
                     width: "60px",
@@ -1216,13 +1228,14 @@ export default function PrinciplesPage() {
                   alignItems: "center",
                   gap: "16px",
                   position: "absolute",
-                  top: "50%",
+                  top: isStacked ? "0" : "50%",
                   left: "50vw",
                   marginLeft: isStacked ? "0" : "-48px", // Compensate for container offsets
-                  transform: `translateY(-50%) translateX(calc(${
+                  transform: `translateY(${
+                    isStacked ? "0" : "-50%"
+                  }) translateX(calc(${
                     // Center the active card at viewport center
                     // Card width is always 528px, gap is 16px
-                    // On mobile, we need to account for the scale in the translation
                     // Active card center = (index + 3) * (cardWidth + gap - negativeMargins) + halfCardWidth
                     // Each inactive card has -13px margin on each side = -26px total
                     // So effective spacing per card = 544 - 26 = 518px
@@ -1263,7 +1276,6 @@ export default function PrinciplesPage() {
                       : isPrev || isNext
                       ? 0.5
                       : 0.25;
-                    // Scale inactive cards to 95%, compensate with negative margins
                     const scale = isActive ? 1 : 0.95;
                     // 5% of 528 = 26.4px total, 13.2px each side
                     const margin = isActive ? "0px" : "-13px";
