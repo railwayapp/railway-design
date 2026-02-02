@@ -138,7 +138,7 @@ export default function Home() {
                 maxWidth: "740px",
               }}
             >
-              Our principles, systems, and how we're building the future of infrastructure.
+              Our principles, systems, and how we&apos;re building the future of infrastructure.
             </p>
           </div>
 

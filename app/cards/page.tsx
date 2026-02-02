@@ -893,7 +893,7 @@ export default function PrinciplesPage() {
         cancelAnimationFrame(momentumAnimationRef.current);
       }
     };
-  }, [view, allCards.length]);
+  }, [view, allCards.length, isStacked, mobileScale]);
 
   // Detect mobile (< 480px for keystrokes) and stacked layout (< 640px)
   // Use useLayoutEffect to calculate before paint to avoid flash
