@@ -1,48 +1,61 @@
 "use client";
 
 import Link from "next/link";
-import CardsAgainstBadQuality from "./components/project-images/CardsAgainstBadQuality";
-import HowToBuildAPage from "./components/project-images/HowToBuildAPage";
-import SharedDefinitionOfQuality from "./components/project-images/SharedDefinitionOfQuality";
-import Branding from "./components/project-images/Branding";
-import OnConsideration from "./components/project-images/OnConsideration";
 
-// Project data
-const projects = [
+// Artifact data
+const artifacts = [
   {
     title: "On Consideration",
-    description: "Why consideration is the foundation of good design",
+    description: "Something something about our principles",
     href: "/on-consideration",
-    image: <OnConsideration />,
-    disabled: false,
   },
   {
     title: "Cards against bad quality",
     description: "Something something about our principles",
     href: "/cards",
-    image: <CardsAgainstBadQuality />,
-    disabled: false,
+  },
+];
+
+// Team data
+const team = [
+  {
+    name: "Jitachi García",
+    role: "Head of Design",
+    image: "/images/team/jitachi.jpg",
+    flag: "🇲🇽",
+    twitter: "https://x.com/jitachi",
+    github: "https://github.com/jitachi",
   },
   {
-    title: "Website Guidelines",
-    description: "Something something about our principles",
-    href: "/how-to-build-a-page",
-    image: <HowToBuildAPage />,
-    disabled: false,
+    name: "Genny Dee",
+    role: "Brand Director",
+    image: "/images/team/genny.jpg",
+    flag: "🇺🇸",
+    twitter: "https://x.com/gennydee",
+    github: "https://github.com/gennydee",
   },
   {
-    title: "Shared definition of quality",
-    description: "Something something about our principles",
-    href: "#",
-    image: <SharedDefinitionOfQuality />,
-    disabled: true,
+    name: "Angelo Saraceno",
+    role: "Brand Designer",
+    image: "/images/team/angelo.jpg",
+    flag: "🇺🇸",
+    twitter: "https://x.com/angelosaraceno",
+    github: "https://github.com/angelosaraceno",
   },
   {
-    title: "Branding",
-    description: "Something something about our principles",
-    href: "#",
-    image: <Branding />,
-    disabled: true,
+    name: "You?",
+    role: "We're hiring",
+    image: null,
+    isHiring: true,
+  },
+];
+
+// Hiring data
+const jobs = [
+  {
+    title: "Sr Product Designer",
+    location: "Anywhere",
+    href: "https://railway.com/careers",
   },
 ];
 
@@ -51,7 +64,7 @@ export default function Home() {
     <div
       className="min-h-screen"
       style={{
-        backgroundColor: "#DDDBD9",
+        backgroundColor: "#F1F0EF",
         padding: "24px",
         backgroundImage: `
           linear-gradient(to right, rgba(0, 0, 0, 0.08) 1px, transparent 1px),
@@ -61,23 +74,19 @@ export default function Home() {
       }}
     >
       <div
-        className="w-full h-full p-12"
         style={{
-          backgroundColor: "#E7E5E3",
+          backgroundColor: "#F1F0EF",
           borderRadius: "8px",
           boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.12)",
-          width: "100%",
-          height: "100%",
           minHeight: "calc(100vh - 48px)",
         }}
       >
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-[1120px] mx-auto py-6" style={{ paddingLeft: "32px", paddingRight: "32px" }}>
           {/* Header */}
-          <div className="flex items-center gap-3 mb-8">
-            {/* Railway Logo */}
+          <div className="flex items-center gap-2" style={{ marginBottom: "160px" }}>
             <svg
-              width="28"
-              height="28"
+              width="24"
+              height="24"
               viewBox="0 0 48 48"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -87,73 +96,247 @@ export default function Home() {
                 fill="#1C1A28"
               />
             </svg>
-            <h1 className="text-xl font-semibold text-gray-900 tracking-tight">
-              Design
-            </h1>
+            <span className="text-base font-medium text-gray-900">Design</span>
           </div>
 
-          {/* Divider */}
-          <div
-            className="mb-8"
-            style={{
-              width: "100%",
-              height: "1px",
-              backgroundColor: "rgba(0, 0, 0, 0.12)",
-            }}
-          />
-
-          {/* Projects Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {projects.map((project, index) => (
-              <Link
-                key={index}
-                href={project.href}
-                className={`group block ${
-                  project.disabled ? "cursor-not-allowed" : ""
-                }`}
-                style={project.disabled ? { opacity: 0.5 } : {}}
-                onClick={
-                  project.disabled ? (e) => e.preventDefault() : undefined
-                }
+          {/* Hero */}
+          <div style={{ marginBottom: "160px" }}>
+            <h1
+              className="text-gray-900"
+              style={{
+                fontFamily: "'IBM Plex Serif', serif",
+                fontWeight: 500,
+                fontSize: "48px",
+                lineHeight: "125%",
+                letterSpacing: "-0.04em",
+              }}
+            >
+              Making the{" "}
+              <em
+                style={{
+                  fontFamily: "'IBM Plex Serif', serif",
+                  fontWeight: 500,
+                  fontStyle: "italic",
+                }}
               >
-                {/* Title and Description */}
-                <h2
-                  className={`text-base font-semibold text-gray-900 mb-1 transition-opacity ${
-                    project.disabled
-                      ? "group-hover:opacity-70"
-                      : "group-hover:underline"
-                  }`}
-                >
-                  {project.title}
-                </h2>
-                <p className="text-sm text-gray-500 mb-4">
-                  {project.description}
-                </p>
+                peaceful
+              </em>{" "}
+              cloud
+            </h1>
+            <p
+              style={{
+                fontFamily: "'IBM Plex Serif', serif",
+                fontWeight: 400,
+                fontSize: "44px",
+                lineHeight: "125%",
+                letterSpacing: "-0.04em",
+                color: "#9CA3AF",
+                maxWidth: "740px",
+              }}
+            >
+              Resources, guidelines, and thoughts from the people crafting Railway.
+            </p>
+          </div>
 
-                {/* Image/SVG */}
-                <div
-                  className="w-full rounded-lg group-hover:opacity-90 transition-opacity overflow-hidden"
+          {/* Artifacts Section */}
+          <Section label="Artifacts">
+            <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "32px" }}>
+              {artifacts.map((artifact, index) => (
+                <Link
+                  key={index}
+                  href={artifact.href}
+                  className="group block rounded-xl p-5 transition-all hover:bg-white/80"
                   style={{
-                    backgroundColor: project.disabled
-                      ? "rgba(0, 0, 0, 0.04)"
-                      : "rgba(0, 0, 0, 0.08)",
-                    border: project.disabled
-                      ? "2px dashed rgba(0, 0, 0, 0.08)"
-                      : "none",
-                    maxHeight: "240px",
-                    height: "240px",
+                    backgroundColor: "rgba(255, 255, 255, 0.5)",
+                    boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.06)",
                   }}
                 >
-                  {project.image ? (
-                    <div className="w-full h-full">{project.image}</div>
-                  ) : (
-                    <div className="w-full h-full bg-transparent" />
-                  )}
+                  <h3
+                    className="text-gray-900 group-hover:underline"
+                    style={{
+                      fontFamily: "'IBM Plex Serif', serif",
+                      fontWeight: 500,
+                      fontSize: "20px",
+                      letterSpacing: "-0.025em",
+                    }}
+                  >
+                    {artifact.title}
+                  </h3>
+                  <p className="text-gray-500 mb-4" style={{ fontSize: "16px", lineHeight: "150%" }}>{artifact.description}</p>
+                  <div
+                    className="w-full"
+                    style={{
+                      height: "120px",
+                    }}
+                  />
+                </Link>
+              ))}
+            </div>
+          </Section>
+
+          {/* Team Section */}
+          <Section label="Team">
+            <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "32px" }}>
+              {team.map((member, index) => (
+                <div key={index} className="flex items-center gap-4">
+                  {/* Photo */}
+                  <div
+                    className="rounded-lg overflow-hidden flex-shrink-0"
+                    style={{
+                      width: "128px",
+                      height: "128px",
+                      backgroundColor: member.isHiring ? "rgba(0, 0, 0, 0.06)" : "rgba(0, 0, 0, 0.1)",
+                    }}
+                  >
+                    {member.image && (
+                      <img
+                        src={member.image}
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+                  </div>
+                  {/* Info */}
+                  <div>
+                    <h3
+                      style={{
+                        fontFamily: "'IBM Plex Serif', serif",
+                        fontWeight: 500,
+                        fontSize: "20px",
+                        letterSpacing: "-0.025em",
+                        color: "#111827",
+                      }}
+                    >
+                      {member.name}
+                    </h3>
+                    <p
+                      style={{
+                        fontFamily: "'Inter', sans-serif",
+                        fontWeight: 400,
+                        fontSize: "16px",
+                        color: "#6B7280",
+                      }}
+                    >
+                      {member.role}
+                    </p>
+                    <div style={{ marginTop: "6px" }}>
+                      {member.isHiring ? (
+                        <Link
+                          href="https://railway.com/careers"
+                          className="text-gray-400 hover:text-gray-600"
+                        >
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M12 5v14M5 12l7 7 7-7" />
+                          </svg>
+                        </Link>
+                      ) : (
+                        <div className="flex items-center" style={{ gap: "12px" }}>
+                          <span style={{ fontSize: "16px" }}>{member.flag}</span>
+                          {member.twitter && (
+                            <Link
+                              href={member.twitter}
+                              className="text-gray-400 hover:text-gray-600"
+                              target="_blank"
+                            >
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                              </svg>
+                            </Link>
+                          )}
+                          {member.github && (
+                            <Link
+                              href={member.github}
+                              className="text-gray-400 hover:text-gray-600"
+                              target="_blank"
+                            >
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                              </svg>
+                            </Link>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </Link>
-            ))}
-          </div>
+              ))}
+            </div>
+          </Section>
+
+          {/* Hiring Section */}
+          <Section label="Hiring" noBorder>
+            <div className="space-y-2">
+              {jobs.map((job, index) => (
+                <Link
+                  key={index}
+                  href={job.href}
+                  target="_blank"
+                  className="flex items-center justify-between p-4 rounded-xl transition-all hover:bg-white/80"
+                  style={{
+                    backgroundColor: "rgba(255, 255, 255, 0.5)",
+                    boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.06)",
+                  }}
+                >
+                  <span className="text-base font-medium text-gray-900">{job.title}</span>
+                  <span className="text-sm text-gray-400">{job.location}</span>
+                </Link>
+              ))}
+            </div>
+          </Section>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// Section component with label on left (4 cols) and content on right (8 cols)
+function Section({
+  label,
+  children,
+  noBorder = false,
+}: {
+  label: string;
+  children: React.ReactNode;
+  noBorder?: boolean;
+}) {
+  return (
+    <div
+      style={{
+        paddingTop: "48px",
+        paddingBottom: "48px",
+        borderTop: "1px solid rgba(0, 0, 0, 0.08)",
+        borderBottom: noBorder ? "none" : undefined,
+      }}
+    >
+      <div
+        className="grid"
+        style={{
+          gridTemplateColumns: "repeat(12, 1fr)",
+          gap: "32px",
+        }}
+      >
+        <div style={{ gridColumn: "span 4" }}>
+          <h2
+            style={{
+              fontFamily: "'Inter Display', sans-serif",
+              fontWeight: 500,
+              fontSize: "24px",
+              color: "#111827",
+            }}
+          >
+            {label}
+          </h2>
+        </div>
+        <div style={{ gridColumn: "span 8" }}>{children}</div>
       </div>
     </div>
   );

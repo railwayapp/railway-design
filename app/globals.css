@@ -245,7 +245,7 @@ a {
 
 /* Title: full width of container */
 .long-form .article-title {
-  font-family: 'IBM Plex Serif', serif;
+  font-family: "IBM Plex Serif", serif;
   font-style: italic;
   font-weight: 600;
   font-size: clamp(32px, 5vw, 64px);
@@ -264,7 +264,7 @@ a {
 
 /* Paragraphs: IBM Plex Serif, Regular, fluid 16-18px, ~1.78 line-height */
 .long-form .article-content p {
-  font-family: 'IBM Plex Serif', serif;
+  font-family: "IBM Plex Serif", serif;
   font-weight: 400;
   font-size: clamp(16px, 1.5vw, 18px);
   line-height: 1.78;
@@ -275,7 +275,7 @@ a {
 
 /* H2s: Inter Semibold, fluid 20-24px, ~1.17 line-height */
 .long-form .article-content h2 {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 600;
   font-size: clamp(20px, 2vw, 24px);
   line-height: 1.17;
@@ -289,7 +289,7 @@ a {
 /* Line extends from container edge to content edge */
 /* At 1120px container: (1120 - 640) / 2 - 32px gap = 208px */
 .long-form .article-content h2.with-line::before {
-  content: '';
+  content: "";
   position: absolute;
   right: calc(100% + 32px); /* 32px gap from H2 */
   top: 50%;
@@ -303,7 +303,7 @@ a {
 
 /* H3s: IBM Plex Serif, Bold, fluid 16-18px, ~1.78 line-height */
 .long-form .article-content h3 {
-  font-family: 'IBM Plex Serif', serif;
+  font-family: "IBM Plex Serif", serif;
   font-weight: 700;
   font-size: clamp(16px, 1.5vw, 18px);
   line-height: 1.78;
@@ -314,7 +314,7 @@ a {
 
 /* Lists */
 .long-form .article-content ul {
-  font-family: 'IBM Plex Serif', serif;
+  font-family: "IBM Plex Serif", serif;
   font-weight: 400;
   font-size: clamp(16px, 1.5vw, 18px);
   line-height: 1.78;
@@ -330,7 +330,7 @@ a {
 }
 
 .long-form .article-content ul.spaced li {
-  margin-bottom: 8px;
+  margin-bottom: 16px;
 }
 
 .long-form .article-content ul.italic,
@@ -368,7 +368,7 @@ a {
 }
 
 .long-form .article-content .footnote p {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   margin-bottom: 0;
 }
 
