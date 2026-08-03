@@ -188,25 +188,6 @@ export default function Home() {
           {/* Careers Section */}
           <Section label="Careers">
             <div className="space-y-8">
-              {/* Video */}
-              <div
-                className="w-full rounded-xl overflow-hidden"
-                style={{
-                  aspectRatio: "16 / 9",
-                  boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.06)",
-                }}
-              >
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src="https://www.youtube.com/embed/LeQFS4yqGek?si=y3_NmAOaKpAo8DKF"
-                  title="YouTube video player"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                />
-              </div>
               {/* Job Listings */}
               {jobs.map((job, index) => (
                 <Link
